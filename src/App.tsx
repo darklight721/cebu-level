@@ -74,7 +74,7 @@ export default function App() {
               if (target.href) return
 
               e.preventDefault()
-              html2canvas(document.body).then((canvas) => {
+              html2canvas(document.body, { logging: false }).then((canvas) => {
                 target.setAttribute('href', canvas.toDataURL())
                 target.click()
               })
