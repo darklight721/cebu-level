@@ -28,13 +28,9 @@
 }
 
 .links {
-  font-size: 0.5rem;
+  font-size: 0.4rem;
   margin: 20px 20px 0;
-  width: 150px;
-}
-
-.main-link {
-  font-size: 0.7rem;
+  width: 145px;
 }
 
 .town {
@@ -77,12 +73,12 @@
 
 @media (min-width: 576px) {
   .links {
-    width: 200px;
+    width: 250px;
     font-size: 0.7rem;
   }
 
   .main-link {
-    font-size: 1rem;
+    font-weight: bold;
   }
 
   .tile {

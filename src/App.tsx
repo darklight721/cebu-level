@@ -23,14 +23,14 @@ export default function App() {
     <div className="app container-md h-100 position-relative overflow-auto">
       <div className="links position-absolute top-0 end-0">
         <a
-          className="main-link d-block text-decoration-none"
-          href="https://github.com"
+          className="d-block text-decoration-none text-truncate main-link"
+          href="https://darklight721.github.io/cebu-level"
         >
-          🏠 https://github.com
+          🏠 https://darklight721.github.io/cebu-level
         </a>
         <a
           data-html2canvas-ignore
-          className="ms-1 ms-sm-2 d-block text-decoration-none text-truncate"
+          className="d-block text-decoration-none text-truncate"
           href="https://my-philippines-travel-level.com/map"
           target="_blank"
           rel="noopener noreferrer"
@@ -39,7 +39,7 @@ export default function App() {
         </a>
         <a
           data-html2canvas-ignore
-          className="ms-1 ms-sm-2 d-block text-decoration-none text-truncate"
+          className="d-block text-decoration-none text-truncate"
           href="https://zhung.com.tw/japanex"
           target="_blank"
           rel="noopener noreferrer"
