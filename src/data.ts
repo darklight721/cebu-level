@@ -300,32 +300,32 @@ export const towns = [
 
 export const levels = [
   {
-    name: 'Lived there',
+    name: 'Nipuyo ko dire',
     points: 5,
     className: 'lived' as const,
   },
   {
-    name: 'Stayed there',
+    name: 'Ni-overnight ko dire',
     points: 4,
     className: 'stayed' as const,
   },
   {
-    name: 'Visited there',
+    name: 'Nibisita ko dire',
     points: 3,
     className: 'visited' as const,
   },
   {
-    name: 'Alighted there',
+    name: 'Ninaog ko dire',
     points: 2,
     className: 'alighted' as const,
   },
   {
-    name: 'Passed there',
+    name: 'Nilabay ko dire',
     points: 1,
     className: 'passed' as const,
   },
   {
-    name: 'Never been there',
+    name: 'Asa na?',
     points: 0,
     className: '' as const,
   },
