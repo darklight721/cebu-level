@@ -69,6 +69,7 @@ export default function App() {
             ref={downloadLink}
             className="btn btn-primary"
             download="cebulevel.png"
+            target="_blank"
             onClick={(e) => {
               const target = e.target as HTMLAnchorElement
               if (target.href) return
