@@ -1,42 +1,91 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.lived {
+  --level-color: #dd1a21;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.stayed {
+  --level-color: #f57d20;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.visited {
+  --level-color: #ffcd03;
+}
+
+.alighted {
+  --level-color: #00af4d;
+}
+
+.passed {
+  --level-color: #006cb7;
+}
+
+.app {
+  min-width: 390px;
+  min-height: 620px;
+}
+
+.title-card {
+  margin: 0 20px 20px;
+}
+
+.links {
+  font-size: 0.5rem;
+  margin: 20px 20px 0;
+  width: 150px;
+}
+
+.main-link {
+  font-size: 0.7rem;
+}
+
+.town {
+  cursor: pointer;
+  fill: var(--level-color, #fff);
+  stroke: #333;
+  stroke-linejoin: round;
+}
+
+.town:active {
+  opacity: 0.7;
+}
+
+@media (hover: hover) {
+  .town:hover {
+    opacity: 0.7;
   }
-  to {
-    transform: rotate(360deg);
+}
+
+.tile {
+  width: 30px;
+  height: 20px;
+  background-color: var(--level-color, #fff);
+  border: 1px solid var(--level-color, #000);
+}
+
+.details-popover .popover {
+  overflow: hidden;
+}
+
+.level-choice {
+  border: none !important;
+  --bs-list-group-action-hover-bg: var(--level-color, #fafafa);
+  --bs-list-group-action-hover-color: var(--bs-list-group-color);
+  --bs-list-group-action-active-bg: var(--level-color, #f4f4f4);
+  --bs-list-group-action-active-color: var(--bs-list-group-color);
+  --bs-list-group-active-bg: var(--level-color, #f4f4f4);
+  --bs-list-group-active-color: var(--bs-list-group-color);
+}
+
+@media (min-width: 576px) {
+  .links {
+    width: 200px;
+    font-size: 0.7rem;
   }
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  .main-link {
+    font-size: 1rem;
   }
-}
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  .tile {
+    width: 40px;
+  }
 }
