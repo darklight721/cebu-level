@@ -75,9 +75,8 @@ export default function App() {
                   className={`level-choice ${level.className}`}
                   onClick={() => {
                     setResult((prev) => ({ ...prev, [activeTown.id]: level }))
-                    window.gtag?.('event', 'select_content', {
-                      content_id: activeTown.id,
-                      content_type: level.points,
+                    window.gtag?.('event', 'join_group', {
+                      group_id: `${activeTown.id}-${level.points}`,
                     })
                     setActiveTown(null)
                     if (downloadLink.current?.href)
