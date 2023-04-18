@@ -75,6 +75,10 @@ export default function App() {
                   className={`level-choice ${level.className}`}
                   onClick={() => {
                     setResult((prev) => ({ ...prev, [activeTown.id]: level }))
+                    window.gtag?.('event', 'select_content', {
+                      content_id: activeTown.id,
+                      content_type: level.points,
+                    })
                     setActiveTown(null)
                     if (downloadLink.current?.href)
                       downloadLink.current.removeAttribute('href')
@@ -150,6 +154,7 @@ export default function App() {
                     target.click()
                   }
                 )
+                window.gtag?.('event', 'post_score', { score: total })
               }}
             >
               Save Image
