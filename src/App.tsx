@@ -20,73 +20,9 @@ export default function App() {
   )
 
   return (
-    <div className="app container-md h-100 position-relative overflow-auto">
-      <div className="links position-absolute top-0 end-0">
-        <a
-          className="d-block text-decoration-none text-truncate main-link"
-          href="https://darklight721.github.io/cebu-level"
-        >
-          🏠 https://darklight721.github.io/cebu-level
-        </a>
-        <a
-          data-html2canvas-ignore
-          className="d-block text-decoration-none text-truncate"
-          href="https://my-philippines-travel-level.com/map"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          📣 https://my-philippines-travel-level.com/map
-        </a>
-        <a
-          data-html2canvas-ignore
-          className="d-block text-decoration-none text-truncate"
-          href="https://zhung.com.tw/japanex"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          📣 https://zhung.com.tw/japanex
-        </a>
-      </div>
-      <div className="title-card position-absolute bottom-0 end-0">
-        <h1 className="text-center">
-          Cebu Level <span className="font-monospace">{total}</span>
-        </h1>
-        <div className="bg-white rounded shadow-sm px-2 px-sm-3 py-1 py-sm-2 mt-2 mt-sm-3">
-          {levels.map((level) => (
-            <div key={level.name} className="d-flex align-items-center my-1">
-              <div className={`tile rounded-1 ${level.className}`} />
-              <div className="flex-fill px-2">{level.name}</div>
-              <div>
-                Level:
-                <span className="ms-2 font-monospace">{level.points}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="text-center mt-3">
-          <a
-            data-html2canvas-ignore
-            ref={downloadLink}
-            className="btn btn-primary"
-            download="cebulevel.png"
-            target="_blank"
-            onClick={(e) => {
-              const target = e.target as HTMLAnchorElement
-              if (target.href) return
-
-              e.preventDefault()
-              html2canvas(document.body, { logging: false }).then((canvas) => {
-                target.setAttribute('href', canvas.toDataURL())
-                target.click()
-              })
-            }}
-          >
-            Save Image
-          </a>
-        </div>
-      </div>
+    <div className="app mx-sm-3 h-100 position-relative overflow-auto d-flex justify-content-md-center">
       <svg
-        className="w-100 h-100"
+        className="flex-grow-1 flex-sm-grow-0 h-100"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 191.769 373.276"
       >
@@ -151,6 +87,76 @@ export default function App() {
           </PopoverBody>
         </Popover>
       )}
+      <div className="d-flex flex-column justify-content-between align-items-end">
+        <div className="links">
+          <a
+            className="d-block text-decoration-none text-truncate main-link"
+            href="https://darklight721.github.io/cebu-level"
+          >
+            🏠 https://darklight721.github.io/cebu-level
+          </a>
+          <a
+            data-html2canvas-ignore
+            className="d-block text-decoration-none text-truncate"
+            href="https://my-philippines-travel-level.com/map"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            📣 https://my-philippines-travel-level.com/map
+          </a>
+          <a
+            data-html2canvas-ignore
+            className="d-block text-decoration-none text-truncate"
+            href="https://zhung.com.tw/japanex"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            📣 https://zhung.com.tw/japanex
+          </a>
+        </div>
+        <div className="title-card">
+          <h1 className="text-center">
+            Cebu Level <span className="font-monospace">{total}</span>
+          </h1>
+          <div className="bg-white rounded shadow-sm px-2 px-sm-3 py-1 py-sm-2 mt-2 mt-sm-3">
+            {levels.map((level) => (
+              <div key={level.name} className="d-flex align-items-center my-1">
+                <div
+                  className={`tile flex-shrink-0 rounded-1 ${level.className}`}
+                />
+                <div className="flex-fill px-2">{level.name}</div>
+                <div>
+                  Level:
+                  <span className="ms-2 font-monospace">{level.points}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-3">
+            <a
+              data-html2canvas-ignore
+              ref={downloadLink}
+              className="btn btn-primary"
+              download="cebulevel.png"
+              target="_blank"
+              onClick={(e) => {
+                const target = e.target as HTMLAnchorElement
+                if (target.href) return
+
+                e.preventDefault()
+                html2canvas(document.body, { logging: false }).then(
+                  (canvas) => {
+                    target.setAttribute('href', canvas.toDataURL())
+                    target.click()
+                  }
+                )
+              }}
+            >
+              Save Image
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

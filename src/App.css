@@ -20,17 +20,23 @@
 
 .app {
   min-width: 390px;
-  min-height: 620px;
-}
-
-.title-card {
-  margin: 0 20px 20px;
+  min-height: 600px;
 }
 
 .links {
+  margin: 20px 20px 0 0;
   font-size: 0.4rem;
-  margin: 20px 20px 0;
   width: 145px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.title-card {
+  margin: 0 20px 20px 0;
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 
 .town {
@@ -83,5 +89,12 @@
 
   .tile {
     width: 40px;
+  }
+}
+
+@media (min-width: 768px) {
+  .links,
+  .title-card {
+    position: static;
   }
 }
