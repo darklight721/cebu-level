@@ -13,9 +13,8 @@ import {
   ModalHeader,
   Row,
 } from 'reactstrap'
-import { DEFAULT_COLOR, VALUES } from './data'
+import { DEFAULT_COLOR, VALUES, type Values } from './data'
 
-type Values = typeof VALUES
 type Level = Values['levels'][0]
 
 type Props = {

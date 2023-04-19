@@ -2,20 +2,25 @@ import html2canvas from 'html2canvas'
 import { useRef, useState } from 'react'
 import { Button, Popover, PopoverBody, PopoverHeader } from 'reactstrap'
 import './App.css'
-import { VALUES, towns } from './data'
 import FormModal from './FormModal'
+import { VALUES, towns, type Values } from './data'
+
+type Result = Record<string, number>
+
+function computeScore(result: Result, values: Values) {
+  return Object.values(result).reduce(
+    (acc, index) => acc + (values.levels[index]?.points ?? 0),
+    0
+  )
+}
 
 export default function App() {
   const [values, setValues] = useState(VALUES)
   const [isEditing, setEditing] = useState(false)
   const toggleEditing = () => setEditing((p) => !p)
   const [activeTown, setActiveTown] = useState<(typeof towns)[0] | null>(null)
-  const [result, setResult] = useState<Record<string, number>>({})
+  const [result, setResult] = useState<Result>({})
   const downloadLink = useRef<HTMLAnchorElement>(null)
-  const total = Object.values(result).reduce(
-    (acc, index) => acc + (values.levels[index]?.points ?? 0),
-    0
-  )
 
   return (
     <div className="app mx-sm-3 h-100 position-relative overflow-auto d-flex justify-content-md-center">
@@ -82,7 +87,9 @@ export default function App() {
         <h1 className="text-center">
           {values.name}
           {values.showPoints && (
-            <span className="ms-2 font-monospace">{total}</span>
+            <span className="ms-2 font-monospace">
+              {computeScore(result, values)}
+            </span>
           )}
         </h1>
         <div className="bg-white rounded shadow-sm px-2 px-sm-3 py-1 py-sm-2 mt-2 mt-sm-3">
@@ -117,7 +124,10 @@ export default function App() {
                 target.setAttribute('href', canvas.toDataURL())
                 target.click()
               })
-              window.gtag?.('event', 'post_score', { score: total })
+              window.gtag?.('event', 'post_score', {
+                score: computeScore(result, values),
+                character: values.name,
+              })
             }}
           >
             Save Image
@@ -151,7 +161,7 @@ export default function App() {
                 onClick={() => {
                   setResult((prev) => ({ ...prev, [activeTown.id]: index }))
                   window.gtag?.('event', 'join_group', {
-                    group_id: `${activeTown.id}-${level.points}`,
+                    group_id: `${activeTown.id}|${level.name}`,
                   })
                   setActiveTown(null)
                   if (downloadLink.current?.href)

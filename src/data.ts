@@ -336,3 +336,5 @@ export const VALUES = {
     },
   ],
 }
+
+export type Values = typeof VALUES
