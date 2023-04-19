@@ -54,7 +54,11 @@ export default function FormModal({
             e.currentTarget.classList.add('was-validated')
 
             if (e.currentTarget.checkValidity()) {
-              onSave({ name, showPoints, levels })
+              onSave({
+                name,
+                showPoints,
+                levels: levels.map((l) => ({ ...l, points: Number(l.points) })),
+              })
               toggle()
             }
           }}
