@@ -1,19 +1,19 @@
 import html2canvas from 'html2canvas'
 import { useRef, useState } from 'react'
-import {
-  ListGroup,
-  ListGroupItem,
-  Popover,
-  PopoverBody,
-  PopoverHeader,
-} from 'reactstrap'
+import { Button, Popover, PopoverBody, PopoverHeader } from 'reactstrap'
 import './App.css'
-import { levels, towns } from './data'
+import { VALUES, towns } from './data'
+import FormModal from './FormModal'
 
 export default function App() {
-  const downloadLink = useRef<HTMLAnchorElement>(null)
+  const [values, setValues] = useState(VALUES)
+  const [isEditing, setEditing] = useState(false)
+  const toggleEditing = () => setEditing((p) => !p)
   const [activeTown, setActiveTown] = useState<(typeof towns)[0] | null>(null)
-  const [result, setResult] = useState<Record<string, (typeof levels)[0]>>({})
+  const [result, setResult] = useState<
+    Record<string, (typeof VALUES.levels)[0]>
+  >({})
+  const downloadLink = useRef<HTMLAnchorElement>(null)
   const total = Object.values(result).reduce(
     (acc, level) => acc + level.points,
     0
@@ -26,12 +26,14 @@ export default function App() {
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 191.769 373.276"
       >
-        {towns.map((town) =>
-          town.paths.length > 1 ? (
+        {towns.map((town) => {
+          const fillColor = result[town.id]?.color ?? '#fff'
+          return town.paths.length > 1 ? (
             <g
               key={town.id}
               id={town.id}
-              className={`town ${result[town.id]?.className ?? ''}`}
+              className="town"
+              fill={fillColor}
               onClick={() => setActiveTown(town)}
               {...(town.props ?? {})}
             >
@@ -44,52 +46,16 @@ export default function App() {
             <path
               key={town.id}
               id={town.id}
-              className={`town ${result[town.id]?.className ?? ''}`}
+              className="town"
+              fill={fillColor}
               d={town.paths[0]}
               onClick={() => setActiveTown(town)}
             >
               <title>{town.name}</title>
             </path>
           )
-        )}
+        })}
       </svg>
-      {activeTown && (
-        <Popover
-          hideArrow
-          isOpen
-          toggle={() => setActiveTown(null)}
-          key={activeTown.id}
-          target={activeTown.id}
-          trigger="legacy"
-          className="details-popover"
-        >
-          <PopoverHeader>{activeTown.name}</PopoverHeader>
-          <PopoverBody className="p-0">
-            <ListGroup flush>
-              {levels.map((level) => (
-                <ListGroupItem
-                  key={level.name}
-                  action
-                  tag="button"
-                  active={result[activeTown.id]?.className === level.className}
-                  className={`level-choice ${level.className}`}
-                  onClick={() => {
-                    setResult((prev) => ({ ...prev, [activeTown.id]: level }))
-                    window.gtag?.('event', 'join_group', {
-                      group_id: `${activeTown.id}-${level.points}`,
-                    })
-                    setActiveTown(null)
-                    if (downloadLink.current?.href)
-                      downloadLink.current.removeAttribute('href')
-                  }}
-                >
-                  {level.name}
-                </ListGroupItem>
-              ))}
-            </ListGroup>
-          </PopoverBody>
-        </Popover>
-      )}
       <div className="d-flex flex-column justify-content-between align-items-end">
         <div className="links">
           <a
@@ -117,27 +83,32 @@ export default function App() {
             📣 https://zhung.com.tw/japanex
           </a>
         </div>
-        <div className="title-card">
+        <div className="title-card d-flex flex-column align-items-center">
           <h1 className="text-center">
-            Cebu Level <span className="font-monospace">{total}</span>
+            {values.name}
+            {values.showPoints && (
+              <span className="ms-2 font-monospace">{total}</span>
+            )}
           </h1>
           <div className="bg-white rounded shadow-sm px-2 px-sm-3 py-1 py-sm-2 mt-2 mt-sm-3">
-            {levels.map((level) => (
+            {values.levels.map((level) => (
               <div key={level.name} className="d-flex align-items-center my-1">
                 <div
-                  className={`tile flex-shrink-0 rounded-1 ${level.className}`}
+                  className="tile flex-shrink-0 rounded-1"
+                  style={{ backgroundColor: level.color }}
                 />
-                <div className="flex-fill px-2">{level.name}</div>
-                <div>
-                  Level:
-                  <span className="ms-2 font-monospace">{level.points}</span>
-                </div>
+                <div className="flex-fill ms-2">{level.name}</div>
+                {values.showPoints && (
+                  <div className="ms-2">
+                    Level:
+                    <span className="ms-2 font-monospace">{level.points}</span>
+                  </div>
+                )}
               </div>
             ))}
           </div>
-          <div className="text-center mt-3">
+          <div data-html2canvas-ignore className="mt-3">
             <a
-              data-html2canvas-ignore
               ref={downloadLink}
               className="btn btn-primary"
               download="cebulevel.png"
@@ -158,9 +129,58 @@ export default function App() {
             >
               Save Image
             </a>
+            <Button className="ms-2" onClick={toggleEditing}>
+              Edit Map
+            </Button>
           </div>
         </div>
       </div>
+      {activeTown && (
+        <Popover
+          hideArrow
+          isOpen
+          toggle={() => setActiveTown(null)}
+          key={activeTown.id}
+          target={activeTown.id}
+          trigger="legacy"
+          className="details-popover"
+        >
+          <PopoverHeader>{activeTown.name}</PopoverHeader>
+          <PopoverBody className="p-0">
+            {values.levels.map((level) => (
+              <button
+                key={level.name}
+                className="level-choice d-block w-100 text-start px-3 py-2"
+                style={
+                  level.name === result[activeTown.id]?.name
+                    ? { backgroundColor: level.color }
+                    : undefined
+                }
+                onClick={() => {
+                  setResult((prev) => ({ ...prev, [activeTown.id]: level }))
+                  window.gtag?.('event', 'join_group', {
+                    group_id: `${activeTown.id}-${level.points}`,
+                  })
+                  setActiveTown(null)
+                  if (downloadLink.current?.href)
+                    downloadLink.current.removeAttribute('href')
+                }}
+              >
+                {level.name}
+              </button>
+            ))}
+          </PopoverBody>
+        </Popover>
+      )}
+      {isEditing && (
+        <FormModal
+          isOpen
+          toggle={toggleEditing}
+          values={values}
+          onSave={(newValues) => setValues(newValues)}
+          onReset={() => setResult({})}
+        />
+      )}
     </div>
   )
 }

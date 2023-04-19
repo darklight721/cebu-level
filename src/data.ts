@@ -298,35 +298,41 @@ export const towns = [
   },
 ]
 
-export const levels = [
-  {
-    name: 'Nipuyo ko dire',
-    points: 5,
-    className: 'lived' as const,
-  },
-  {
-    name: 'Ni-overnight ko dire',
-    points: 4,
-    className: 'stayed' as const,
-  },
-  {
-    name: 'Nibisita ko dire',
-    points: 3,
-    className: 'visited' as const,
-  },
-  {
-    name: 'Ninaog ko dire',
-    points: 2,
-    className: 'alighted' as const,
-  },
-  {
-    name: 'Nilabay ko dire',
-    points: 1,
-    className: 'passed' as const,
-  },
-  {
-    name: 'Asa na?',
-    points: 0,
-    className: '' as const,
-  },
-]
+export const DEFAULT_COLOR = '#dd1a21'
+
+export const VALUES = {
+  name: 'Cebu Level',
+  showPoints: true,
+  levels: [
+    {
+      color: DEFAULT_COLOR,
+      name: 'Nipuyo ko dire',
+      points: 5,
+    },
+    {
+      color: '#f57d20',
+      name: 'Ni-overnight ko dire',
+      points: 4,
+    },
+    {
+      color: '#ffcd03',
+      name: 'Nibisita ko dire',
+      points: 3,
+    },
+    {
+      color: '#00af4d',
+      name: 'Ninaog ko dire',
+      points: 2,
+    },
+    {
+      color: '#006cb7',
+      name: 'Nilabay ko dire',
+      points: 1,
+    },
+    {
+      color: '#fff',
+      name: 'Asa na?',
+      points: 0,
+    },
+  ],
+}

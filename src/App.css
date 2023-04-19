@@ -1,21 +1,6 @@
-.lived {
-  --level-color: #dd1a21;
-}
-
-.stayed {
-  --level-color: #f57d20;
-}
-
-.visited {
-  --level-color: #ffcd03;
-}
-
-.alighted {
-  --level-color: #00af4d;
-}
-
-.passed {
-  --level-color: #006cb7;
+:root {
+  --black: #333;
+  --light-gray: #f1f1f1;
 }
 
 .app {
@@ -37,12 +22,13 @@
   position: absolute;
   bottom: 0;
   right: 0;
+  min-width: 200px;
+  max-width: 250px;
 }
 
 .town {
   cursor: pointer;
-  fill: var(--level-color, #fff);
-  stroke: #333;
+  stroke: var(--black);
   stroke-linejoin: round;
 }
 
@@ -50,17 +36,14 @@
   opacity: 0.7;
 }
 
-@media (hover: hover) {
-  .town:hover {
-    opacity: 0.7;
-  }
-}
-
 .tile {
   width: 30px;
   height: 20px;
-  background-color: var(--level-color, #fff);
-  border: 1px solid var(--level-color, #000);
+  border: 1px solid var(--black);
+}
+
+.color-input {
+  height: 38px;
 }
 
 .details-popover .popover {
@@ -68,13 +51,24 @@
 }
 
 .level-choice {
-  border: none !important;
-  --bs-list-group-action-hover-bg: var(--level-color, #fafafa);
-  --bs-list-group-action-hover-color: var(--bs-list-group-color);
-  --bs-list-group-action-active-bg: var(--level-color, #f4f4f4);
-  --bs-list-group-action-active-color: var(--bs-list-group-color);
-  --bs-list-group-active-bg: var(--level-color, #f4f4f4);
-  --bs-list-group-active-color: var(--bs-list-group-color);
+  border: none;
+  border-radius: 0;
+  background-color: #fff;
+  color: var(--black);
+}
+
+.level-choice:active {
+  background-color: var(--light-gray);
+}
+
+@media (hover: hover) {
+  .town:hover {
+    opacity: 0.7;
+  }
+
+  .level-choice:hover {
+    background-color: var(--light-gray);
+  }
 }
 
 @media (min-width: 576px) {
@@ -85,6 +79,10 @@
 
   .main-link {
     font-weight: bold;
+  }
+
+  .title-card {
+    max-width: 400px;
   }
 
   .tile {
