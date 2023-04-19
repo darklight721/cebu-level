@@ -10,12 +10,10 @@ export default function App() {
   const [isEditing, setEditing] = useState(false)
   const toggleEditing = () => setEditing((p) => !p)
   const [activeTown, setActiveTown] = useState<(typeof towns)[0] | null>(null)
-  const [result, setResult] = useState<
-    Record<string, (typeof VALUES.levels)[0]>
-  >({})
+  const [result, setResult] = useState<Record<string, number>>({})
   const downloadLink = useRef<HTMLAnchorElement>(null)
   const total = Object.values(result).reduce(
-    (acc, level) => acc + level.points,
+    (acc, index) => acc + (values.levels[index]?.points ?? 0),
     0
   )
 
@@ -51,7 +49,7 @@ export default function App() {
         viewBox="0 0 191.769 373.276"
       >
         {towns.map((town) => {
-          const fillColor = result[town.id]?.color ?? '#fff'
+          const fillColor = values.levels[result[town.id]!]?.color ?? '#fff'
           return town.paths.length > 1 ? (
             <g
               key={town.id}
@@ -141,17 +139,17 @@ export default function App() {
         >
           <PopoverHeader>{activeTown.name}</PopoverHeader>
           <PopoverBody className="p-0">
-            {values.levels.map((level) => (
+            {values.levels.map((level, index) => (
               <button
                 key={level.name}
                 className="level-choice d-block w-100 text-start px-3 py-2"
                 style={
-                  level.name === result[activeTown.id]?.name
+                  index === result[activeTown.id]
                     ? { backgroundColor: level.color }
                     : undefined
                 }
                 onClick={() => {
-                  setResult((prev) => ({ ...prev, [activeTown.id]: level }))
+                  setResult((prev) => ({ ...prev, [activeTown.id]: index }))
                   window.gtag?.('event', 'join_group', {
                     group_id: `${activeTown.id}-${level.points}`,
                   })
