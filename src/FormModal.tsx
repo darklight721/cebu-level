@@ -46,11 +46,24 @@ export default function FormModal({
     <Modal isOpen={isOpen} toggle={toggle}>
       <ModalHeader toggle={toggle}>Edit Map</ModalHeader>
       <ModalBody>
-        <Form>
+        <Form
+          id="form"
+          noValidate
+          onSubmit={(e) => {
+            e.preventDefault()
+            e.currentTarget.classList.add('was-validated')
+
+            if (e.currentTarget.checkValidity()) {
+              onSave({ name, showPoints, levels })
+              toggle()
+            }
+          }}
+        >
           <FormGroup>
             <Label for="name">Name</Label>
             <Input
               id="name"
+              maxLength={48}
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -72,6 +85,7 @@ export default function FormModal({
               <Col xs="2">
                 <FormGroup>
                   <Input
+                    required
                     className="color-input"
                     type="color"
                     value={level.color}
@@ -84,7 +98,9 @@ export default function FormModal({
               <Col>
                 <FormGroup>
                   <Input
+                    required
                     placeholder="Level name"
+                    maxLength={32}
                     value={level.name}
                     onChange={(e) =>
                       changeLevelValue(index, 'name', e.target.value)
@@ -98,6 +114,7 @@ export default function FormModal({
                     <Input
                       type="number"
                       min={0}
+                      max={100}
                       placeholder="Points"
                       value={level.points}
                       onChange={(e) =>
@@ -110,6 +127,7 @@ export default function FormModal({
               <Col xs="auto">
                 <CloseButton
                   className="p-2"
+                  disabled={levels.length <= 1}
                   onClick={() => setLevels((p) => p.filter((l) => l !== level))}
                 />
               </Col>
@@ -117,7 +135,9 @@ export default function FormModal({
           ))}
           <Button
             outline
+            type="button"
             color="primary"
+            disabled={levels.length >= 10}
             onClick={() =>
               setLevels((p) => [
                 ...p,
@@ -130,13 +150,7 @@ export default function FormModal({
         </Form>
       </ModalBody>
       <ModalFooter>
-        <Button
-          color="primary"
-          onClick={() => {
-            onSave({ name, showPoints, levels })
-            toggle()
-          }}
-        >
+        <Button color="primary" type="submit" form="form">
           Save
         </Button>
         <Button
