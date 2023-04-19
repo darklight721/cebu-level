@@ -21,6 +21,30 @@ export default function App() {
 
   return (
     <div className="app mx-sm-3 h-100 position-relative overflow-auto d-flex justify-content-md-center">
+      <div className="links m-2 text-end position-absolute top-0 end-0">
+        <a
+          className="d-block text-decoration-none main-link"
+          href="https://darklight721.github.io/cebu-level"
+        >
+          🏠 https://darklight721.github.io/cebu-level
+        </a>
+        <a
+          data-html2canvas-ignore
+          className="d-block text-decoration-none"
+          href="https://my-philippines-travel-level.com/map"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          📣 My Philippines Travel Level
+        </a>
+        <a
+          data-html2canvas-ignore
+          className="d-block text-decoration-none"
+          href="mailto:skinned.vibes-06@icloud.com?subject=Cebu%20Level&body=Hi%20Roy!"
+        >
+          ✉️ Contact me here
+        </a>
+      </div>
       <svg
         className="flex-grow-1 flex-sm-grow-0 h-100"
         xmlns="http://www.w3.org/2000/svg"
@@ -56,83 +80,53 @@ export default function App() {
           )
         })}
       </svg>
-      <div className="d-flex flex-column justify-content-between align-items-end">
-        <div className="links">
-          <a
-            className="d-block text-decoration-none text-truncate main-link"
-            href="https://darklight721.github.io/cebu-level"
-          >
-            🏠 https://darklight721.github.io/cebu-level
-          </a>
-          <a
-            data-html2canvas-ignore
-            className="d-block text-decoration-none text-truncate"
-            href="https://my-philippines-travel-level.com/map"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            📣 https://my-philippines-travel-level.com/map
-          </a>
-          <a
-            data-html2canvas-ignore
-            className="d-block text-decoration-none text-truncate"
-            href="https://zhung.com.tw/japanex"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            📣 https://zhung.com.tw/japanex
-          </a>
+      <div className="title-card d-flex flex-column align-items-center">
+        <h1 className="text-center">
+          {values.name}
+          {values.showPoints && (
+            <span className="ms-2 font-monospace">{total}</span>
+          )}
+        </h1>
+        <div className="bg-white rounded shadow-sm px-2 px-sm-3 py-1 py-sm-2 mt-2 mt-sm-3">
+          {values.levels.map((level) => (
+            <div key={level.name} className="d-flex align-items-center my-1">
+              <div
+                className="tile flex-shrink-0 rounded-1"
+                style={{ backgroundColor: level.color }}
+              />
+              <div className="flex-fill ms-2">{level.name}</div>
+              {values.showPoints && (
+                <div className="ms-2">
+                  Level:
+                  <span className="ms-2 font-monospace">{level.points}</span>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
-        <div className="title-card d-flex flex-column align-items-center">
-          <h1 className="text-center">
-            {values.name}
-            {values.showPoints && (
-              <span className="ms-2 font-monospace">{total}</span>
-            )}
-          </h1>
-          <div className="bg-white rounded shadow-sm px-2 px-sm-3 py-1 py-sm-2 mt-2 mt-sm-3">
-            {values.levels.map((level) => (
-              <div key={level.name} className="d-flex align-items-center my-1">
-                <div
-                  className="tile flex-shrink-0 rounded-1"
-                  style={{ backgroundColor: level.color }}
-                />
-                <div className="flex-fill ms-2">{level.name}</div>
-                {values.showPoints && (
-                  <div className="ms-2">
-                    Level:
-                    <span className="ms-2 font-monospace">{level.points}</span>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-          <div data-html2canvas-ignore className="mt-3">
-            <a
-              ref={downloadLink}
-              className="btn btn-primary"
-              download="cebulevel.png"
-              target="_blank"
-              onClick={(e) => {
-                const target = e.target as HTMLAnchorElement
-                if (target.href) return
+        <div data-html2canvas-ignore className="mt-3">
+          <a
+            ref={downloadLink}
+            className="btn btn-primary"
+            download="cebulevel.png"
+            target="_blank"
+            onClick={(e) => {
+              const target = e.target as HTMLAnchorElement
+              if (target.href) return
 
-                e.preventDefault()
-                html2canvas(document.body, { logging: false }).then(
-                  (canvas) => {
-                    target.setAttribute('href', canvas.toDataURL())
-                    target.click()
-                  }
-                )
-                window.gtag?.('event', 'post_score', { score: total })
-              }}
-            >
-              Save Image
-            </a>
-            <Button className="ms-2" onClick={toggleEditing}>
-              Edit Map
-            </Button>
-          </div>
+              e.preventDefault()
+              html2canvas(document.body, { logging: false }).then((canvas) => {
+                target.setAttribute('href', canvas.toDataURL())
+                target.click()
+              })
+              window.gtag?.('event', 'post_score', { score: total })
+            }}
+          >
+            Save Image
+          </a>
+          <Button className="ms-2" onClick={toggleEditing}>
+            Edit Map
+          </Button>
         </div>
       </div>
       {activeTown && (

@@ -9,12 +9,7 @@
 }
 
 .links {
-  margin: 20px 20px 0 0;
-  font-size: 0.4rem;
-  width: 145px;
-  position: absolute;
-  top: 0;
-  right: 0;
+  font-size: 0.5rem;
 }
 
 .title-card {
@@ -73,7 +68,6 @@
 
 @media (min-width: 576px) {
   .links {
-    width: 250px;
     font-size: 0.7rem;
   }
 
@@ -83,6 +77,7 @@
 
   .title-card {
     max-width: 400px;
+    margin-bottom: 40px;
   }
 
   .tile {
@@ -91,8 +86,8 @@
 }
 
 @media (min-width: 768px) {
-  .links,
   .title-card {
     position: static;
+    align-self: flex-end;
   }
 }
