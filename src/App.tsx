@@ -1,9 +1,10 @@
 import html2canvas from 'html2canvas'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button, Popover, PopoverBody, PopoverHeader } from 'reactstrap'
 import './App.css'
 import FormModal from './FormModal'
 import { VALUES, towns, type Values } from './data'
+import { tryParse } from './utils'
 
 type Result = Record<string, number>
 
@@ -15,12 +16,24 @@ function computeScore(result: Result, values: Values) {
 }
 
 export default function App() {
-  const [values, setValues] = useState(VALUES)
+  const [values, setValues] = useState(() =>
+    tryParse<Values>(localStorage.getItem('values'), VALUES)
+  )
   const [isEditing, setEditing] = useState(false)
   const toggleEditing = () => setEditing((p) => !p)
   const [activeTown, setActiveTown] = useState<(typeof towns)[0] | null>(null)
-  const [result, setResult] = useState<Result>({})
+  const [result, setResult] = useState(() =>
+    tryParse<Result>(localStorage.getItem('result'), {})
+  )
   const downloadLink = useRef<HTMLAnchorElement>(null)
+
+  useEffect(() => {
+    localStorage.setItem('result', JSON.stringify(result))
+  }, [result])
+
+  useEffect(() => {
+    localStorage.setItem('values', JSON.stringify(values))
+  }, [values])
 
   return (
     <div className="app mx-sm-3 h-100 position-relative overflow-auto d-flex justify-content-md-center">
