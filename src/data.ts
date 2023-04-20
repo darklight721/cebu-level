@@ -330,7 +330,7 @@ export const VALUES = {
       points: 1,
     },
     {
-      color: '#fff',
+      color: '#ffffff',
       name: 'Asa na?',
       points: 0,
     },
