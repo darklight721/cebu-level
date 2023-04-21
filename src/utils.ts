@@ -1,6 +1,6 @@
 import JSONCrush from 'jsoncrush'
 
-export function tryParse<T>(text: string | null, defaultValue = null) {
+function tryParse<T>(text: string | null, defaultValue = null) {
   try {
     return (text && (JSON.parse(text) as T)) || defaultValue
   } catch {

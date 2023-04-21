@@ -146,7 +146,6 @@ export default function App({
           hideArrow
           isOpen
           toggle={() => setActiveTown(null)}
-          key={activeTown.id}
           target={activeTown.id}
           trigger="legacy"
           className="details-popover"
