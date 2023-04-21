@@ -1,12 +1,10 @@
-import html2canvas from 'html2canvas'
-import { useEffect, useRef, useState } from 'react'
-import { Button, Popover, PopoverBody, PopoverHeader } from 'reactstrap'
+import { useEffect, useState } from 'react'
+import { ButtonGroup, Popover, PopoverBody, PopoverHeader } from 'reactstrap'
 import './App.css'
-import FormModal from './FormModal'
-import { VALUES, towns, type Values } from './data'
-import { tryParse } from './utils'
-
-type Result = Record<string, number>
+import EditMap from './EditMap'
+import SaveImage from './SaveImage'
+import ShareMap from './ShareMap'
+import { HOME_URL, towns, type Result, type Values } from './data'
 
 function computeScore(result: Result, values: Values) {
   return Object.values(result).reduce(
@@ -15,34 +13,36 @@ function computeScore(result: Result, values: Values) {
   )
 }
 
-export default function App() {
-  const [values, setValues] = useState(() =>
-    tryParse<Values>(localStorage.getItem('values'), VALUES)
-  )
-  const [isEditing, setEditing] = useState(false)
-  const toggleEditing = () => setEditing((p) => !p)
+type Props = {
+  values: Values
+  result: Result
+  onChangeValues: (values: Values) => void
+  onChangeResult: (result: Result) => void
+}
+
+export default function App({
+  values: initValues,
+  result: initResult,
+  onChangeValues,
+  onChangeResult,
+}: Props) {
+  const [values, setValues] = useState(initValues)
+  const [result, setResult] = useState(initResult)
   const [activeTown, setActiveTown] = useState<(typeof towns)[0] | null>(null)
-  const [result, setResult] = useState(() =>
-    tryParse<Result>(localStorage.getItem('result'), {})
-  )
-  const downloadLink = useRef<HTMLAnchorElement>(null)
 
   useEffect(() => {
-    localStorage.setItem('result', JSON.stringify(result))
-  }, [result])
-
-  useEffect(() => {
-    localStorage.setItem('values', JSON.stringify(values))
+    onChangeValues(values)
   }, [values])
+
+  useEffect(() => {
+    onChangeResult(result)
+  }, [result])
 
   return (
     <div className="app mx-sm-3 h-100 position-relative overflow-auto d-flex justify-content-md-center">
       <div className="links m-2 text-end position-absolute top-0 end-0">
-        <a
-          className="d-block text-decoration-none main-link"
-          href="https://darklight721.github.io/cebu-level"
-        >
-          🏠 https://darklight721.github.io/cebu-level
+        <a className="d-block text-decoration-none main-link" href={HOME_URL}>
+          🏠 {HOME_URL}
         </a>
         <a
           data-html2canvas-ignore
@@ -123,31 +123,22 @@ export default function App() {
           ))}
         </div>
         <div data-html2canvas-ignore className="mt-3">
-          <a
-            ref={downloadLink}
-            className="btn btn-primary"
-            download="cebulevel.png"
-            target="_blank"
-            onClick={(e) => {
-              const target = e.target as HTMLAnchorElement
-              if (target.href) return
-
-              e.preventDefault()
-              html2canvas(document.body, { logging: false }).then((canvas) => {
-                target.setAttribute('href', canvas.toDataURL())
-                target.click()
-              })
-              window.gtag?.('event', 'post_score', {
-                score: computeScore(result, values),
-                character: values.name,
-              })
-            }}
-          >
-            Save Image
-          </a>
-          <Button className="ms-2" onClick={toggleEditing}>
-            Edit Map
-          </Button>
+          <ButtonGroup className="actions">
+            <SaveImage
+              onClick={() =>
+                window.gtag?.('event', 'post_score', {
+                  score: computeScore(result, values),
+                  character: values.name,
+                })
+              }
+            />
+            <EditMap
+              values={values}
+              onSave={setValues}
+              onReset={() => setResult({})}
+            />
+            <ShareMap values={values} result={result} />
+          </ButtonGroup>
         </div>
       </div>
       {activeTown && (
@@ -177,8 +168,6 @@ export default function App() {
                     group_id: `${activeTown.id}|${level.name}`,
                   })
                   setActiveTown(null)
-                  if (downloadLink.current?.href)
-                    downloadLink.current.removeAttribute('href')
                 }}
               >
                 {level.name}
@@ -186,15 +175,6 @@ export default function App() {
             ))}
           </PopoverBody>
         </Popover>
-      )}
-      {isEditing && (
-        <FormModal
-          isOpen
-          toggle={toggleEditing}
-          values={values}
-          onSave={(newValues) => setValues(newValues)}
-          onReset={() => setResult({})}
-        />
       )}
     </div>
   )

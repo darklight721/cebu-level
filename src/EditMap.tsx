@@ -18,20 +18,17 @@ import { DEFAULT_COLOR, VALUES, type Values } from './data'
 type Level = Values['levels'][0]
 
 type Props = {
-  isOpen: boolean
-  toggle: () => void
   values: Values
   onSave: (newValues: Values) => void
   onReset: () => void
 }
 
-export default function FormModal({
-  isOpen,
-  toggle,
+function EditMapModal({
   values,
   onSave,
   onReset,
-}: Props) {
+  toggle,
+}: Props & { toggle: () => void }) {
   const [name, setName] = useState(values.name)
   const [showPoints, setShowPoints] = useState(values.showPoints)
   const [levels, setLevels] = useState(values.levels)
@@ -42,7 +39,7 @@ export default function FormModal({
     )
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle}>
+    <Modal isOpen toggle={toggle}>
       <ModalHeader toggle={toggle}>Edit Map</ModalHeader>
       <ModalBody>
         <Form
@@ -171,5 +168,18 @@ export default function FormModal({
         </Button>
       </ModalFooter>
     </Modal>
+  )
+}
+
+export default function EditMap(props: Props) {
+  const [isEditing, setEditing] = useState(false)
+
+  return (
+    <>
+      <Button onClick={() => setEditing(true)}>Edit Map</Button>
+      {isEditing && (
+        <EditMapModal {...props} toggle={() => setEditing(false)} />
+      )}
+    </>
   )
 }

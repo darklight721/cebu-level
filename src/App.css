@@ -56,6 +56,14 @@
   background-color: var(--light-gray);
 }
 
+.link-type {
+  font-size: 0.7rem;
+}
+
+.actions .btn {
+  --bs-btn-font-size: 0.7rem;
+}
+
 @media (hover: hover) {
   .town:hover {
     opacity: 0.7;
@@ -83,11 +91,19 @@
   .tile {
     width: 40px;
   }
+
+  .actions .btn {
+    --bs-btn-font-size: 0.85rem;
+  }
 }
 
 @media (min-width: 768px) {
   .title-card {
     position: static;
     align-self: flex-end;
+  }
+
+  .actions .btn {
+    --bs-btn-font-size: 1rem;
   }
 }

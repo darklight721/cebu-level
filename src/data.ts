@@ -338,3 +338,6 @@ export const VALUES = {
 }
 
 export type Values = typeof VALUES
+export type Result = Record<string, number>
+
+export const HOME_URL = 'https://darklight721.github.io/cebu-level'
