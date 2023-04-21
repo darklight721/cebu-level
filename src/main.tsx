@@ -3,21 +3,29 @@ import queryString from 'query-string'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import { Result, VALUES, Values } from './data'
+import {
+  VALUES,
+  validateResult,
+  validateValues,
+  type Result,
+  type Values,
+} from './data'
 import './index.css'
 import { getFromLocalStorage, saveToLocalStorage, unpackObject } from './utils'
 
 const params = queryString.parse(location.search)
-const valuesParam = params.v && unpackObject<Values>(params.v as string)
-const resultParam = params.r && unpackObject<Result>(params.r as string)
+const valuesParam =
+  params.v && unpackObject<Values>(params.v as string, validateValues)
+const resultParam =
+  params.r && unpackObject<Result>(params.r as string, validateResult)
 const hasParams = Boolean(valuesParam || resultParam)
 
 const values = hasParams
   ? valuesParam || VALUES
-  : getFromLocalStorage<Values>('values') || VALUES
+  : getFromLocalStorage<Values>('values', validateValues) || VALUES
 const result = hasParams
   ? resultParam || {}
-  : getFromLocalStorage<Result>('result') || {}
+  : getFromLocalStorage<Result>('result', validateResult) || {}
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>

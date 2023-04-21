@@ -340,4 +340,28 @@ export const VALUES = {
 export type Values = typeof VALUES
 export type Result = Record<string, number>
 
+export function validateValues(data: any): data is Values {
+  return (
+    data !== null &&
+    typeof data === 'object' &&
+    typeof data.name === 'string' &&
+    typeof data.showPoints === 'boolean' &&
+    Array.isArray(data.levels) &&
+    data.levels.every(
+      (level: any) =>
+        typeof level.color === 'string' &&
+        typeof level.name === 'string' &&
+        typeof level.points === 'number'
+    )
+  )
+}
+
+export function validateResult(data: any): data is Result {
+  return (
+    data !== null &&
+    typeof data === 'object' &&
+    Object.values(data).every((item) => typeof item === 'number')
+  )
+}
+
 export const HOME_URL = 'https://cebu-level.mapmo.co'
