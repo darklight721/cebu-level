@@ -364,4 +364,4 @@ export function validateResult(data: any): data is Result {
   )
 }
 
-export const HOME_URL = 'https://cebu-level.mapmo.co'
+export const HOME_URL = 'https://darklight721.github.io/cebu-level'
