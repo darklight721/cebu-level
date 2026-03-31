@@ -33,6 +33,17 @@ npx prettier --check .                     # Check formatting without writing
 Prettier runs automatically on commit via husky + lint-staged (pre-commit hook).
 There is no ESLint configured.
 
+### Commit Messages
+
+Short imperative phrases, no period, no conventional-commit prefix:
+
+```
+Update all dependencies to latest versions
+Migrate from Vite to Rsbuild
+Add more info in readme
+Validate values and result
+```
+
 ## Project Structure
 
 ```
