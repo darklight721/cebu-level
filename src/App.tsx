@@ -9,7 +9,7 @@ import { HOME_URL, towns, type Result, type Values } from './data'
 function computeScore(result: Result, values: Values) {
   return Object.values(result).reduce(
     (acc, index) => acc + (values.levels[index]?.points ?? 0),
-    0
+    0,
   )
 }
 

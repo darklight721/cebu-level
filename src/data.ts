@@ -351,7 +351,7 @@ export function validateValues(data: any): data is Values {
       (level: any) =>
         typeof level.color === 'string' &&
         typeof level.name === 'string' &&
-        typeof level.points === 'number'
+        typeof level.points === 'number',
     )
   )
 }

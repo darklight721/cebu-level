@@ -43,7 +43,7 @@ function ShareMapModal({
         v: valuesParam,
         r: type === 1 ? resultParam : '',
       },
-      { strict: false, skipEmptyString: true }
+      { strict: false, skipEmptyString: true },
     )
 
     return params ? `${HOME_URL}/?${params}` : HOME_URL
@@ -106,7 +106,7 @@ function ShareMapModal({
           {isCopied ? 'Copied' : 'Copy'} to clipboard
         </Button>
         <div className="mt-3">
-          <FacebookShareButton className="m-1" url={link} quote={values.name}>
+          <FacebookShareButton className="m-1" url={link}>
             <FacebookIcon round />
           </FacebookShareButton>
           <TwitterShareButton className="m-1" url={link} title={values.name}>

@@ -14,7 +14,7 @@ export function saveToLocalStorage(key: string, value: object) {
 
 export function getFromLocalStorage<T>(
   key: string,
-  validate: (d: any) => d is T
+  validate: (d: any) => d is T,
 ) {
   const value = tryParse(localStorage.getItem(key))
   return validate(value) ? value : null

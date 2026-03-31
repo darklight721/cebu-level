@@ -39,5 +39,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         if (!hasParams) saveToLocalStorage('result', newResult)
       }}
     />
-  </React.StrictMode>
+  </React.StrictMode>,
 )

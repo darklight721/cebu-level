@@ -35,7 +35,7 @@ function EditMapModal({
 
   const changeLevelValue = (index: number, key: keyof Level, value: string) =>
     setLevels((p) =>
-      p.map((l, i) => (i === index ? { ...l, [key]: value } : l))
+      p.map((l, i) => (i === index ? { ...l, [key]: value } : l)),
     )
 
   return (
