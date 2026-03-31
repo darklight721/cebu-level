@@ -10,39 +10,14 @@ npm install          # Install dependencies
 npm run dev          # Start Rsbuild dev server
 npm run build        # Type-check (tsc) then build (rsbuild build)
 npm run preview      # Preview production build locally
-```
-
-**There is no test framework configured.** No test runner, no test files, no test scripts.
-If adding tests, Vitest is the natural choice.
-
-### Type Checking
-
-```bash
-npx tsc --noEmit     # Run TypeScript type checking only (no output)
-```
-
-The `npm run build` command runs `tsc && rsbuild build`, so type errors will block the build.
-
-### Linting
-
-```bash
+npx tsc --noEmit     # Type-check only (no output)
 npm run lint         # Run oxlint on the project
-npx oxlint src/      # Lint a specific directory
-```
-
-Oxlint is configured in `.oxlintrc.json` with the `typescript`, `import`, `react-perf`, and `jsx-a11y` plugins enabled.
-Oxlint runs automatically on staged `.ts`/`.tsx` files on commit via husky + lint-staged.
-
-### Formatting
-
-```bash
 npm run fmt          # Format all files with oxfmt
 npm run fmt:check    # Check formatting without writing
 ```
 
-Oxfmt (configured in `.oxfmtrc.json`) replaces Prettier. It is Prettier-compatible — same
-`semi: false` and `singleQuote: true` rules — with `printWidth: 80`.
-Oxfmt runs automatically on all staged files on commit via husky + lint-staged.
+No test framework is configured. Vitest is the natural choice if tests are added.
+Oxlint and oxfmt run automatically on staged files on commit via husky + lint-staged.
 
 ### Commit Messages
 
@@ -51,60 +26,25 @@ Short imperative phrases, no period, no conventional-commit prefix:
 ```
 Update all dependencies to latest versions
 Migrate from Vite to Rsbuild
-Add more info in readme
-Validate values and result
 ```
 
 ## Project Structure
 
-```
-src/
-  main.tsx          # Entry point: parses URL params, loads localStorage, renders App
-  App.tsx           # Main component: SVG map, legend, action buttons
-  data.ts           # Town SVG path data, default values/levels, types, validators
-  utils.ts          # LocalStorage helpers, JSONCrush pack/unpack utilities
-  EditMap.tsx        # Modal form for editing map name, levels, colors, points
-  SaveImage.tsx      # html2canvas screenshot + download
-  ShareMap.tsx       # URL sharing with social media buttons
-  globals.d.ts       # Window interface augmentation (gtag)
-  vite-env.d.ts      # Vite/Rsbuild client types
-  App.css            # Component styles
-  index.css          # Global styles
-```
-
-All source code lives in `src/`. There are no subdirectories — it's a flat structure.
-Static assets are in `public/`. The app deploys to GitHub Pages at `/cebu-level/`.
+All source code lives in `src/` (flat, no subdirectories). Static assets in `public/`.
+Deploys to GitHub Pages at `/cebu-level/` via GitHub Actions on push to `main`.
 
 ## Code Style
 
-### Formatting Rules (Oxfmt)
-
-- **No semicolons** (`"semi": false`)
-- **Single quotes** (`"singleQuote": true`)
-- **Print width** of 80 characters (`"printWidth": 80`)
-- These are enforced on every commit via husky pre-commit hook
-
-### TypeScript Configuration
-
-Strict mode is enabled with additional strictness flags:
-
-- `"strict": true`
-- `"noUncheckedIndexedAccess": true` — indexed access returns `T | undefined`
-- `"noUnusedLocals": true` — no unused variables
-- `"noUnusedParameters": true` — no unused function parameters
-- `"noImplicitReturns": true` — every code path must return
-- `"allowUnreachableCode": false`
-- `"allowUnusedLabels": false`
-
-Target is `ESNext` with `"module": "ESNext"` and `"jsx": "react-jsx"`.
+**Formatting** (`.oxfmtrc.json`): no semicolons, single quotes, 80-char print width.
+**TypeScript** (`tsconfig.json`): strict mode + `noUncheckedIndexedAccess`, `noUnusedLocals`, `noUnusedParameters`, `noImplicitReturns`.
 
 ### Import Order
 
-1. Third-party library imports (react, reactstrap, etc.)
-2. Local module imports (./App, ./data, ./utils)
-3. CSS imports (./App.css, ./index.css)
+1. Third-party imports (`react`, `reactstrap`, etc.)
+2. Local imports (`./App`, `./data`, `./utils`)
+3. CSS imports
 
-Use **named imports** from libraries. Use **inline `type` keyword** for type-only imports:
+Use named imports. Use inline `type` keyword for type-only imports:
 
 ```typescript
 import { useState } from 'react'
@@ -153,44 +93,14 @@ export default function EditMap(props: Props) {
 
 ### Error Handling
 
-- Use **try/catch with fallback defaults** for parsing operations (see `tryParse` in `utils.ts`)
-- Use **type guard functions** (`(data: any): data is T`) for runtime validation
-- Use **optional chaining and nullish coalescing** for safe property access:
-  `values.levels[index]?.points ?? 0`
-- Use **optional chaining for browser APIs** that may not exist: `window.gtag?.(...)`
+- **try/catch with fallback defaults** for parsing (see `tryParse` in `utils.ts`)
+- **Type guard functions** (`(data: any): data is T`) for runtime validation
+- **Optional chaining + nullish coalescing**: `values.levels[index]?.points ?? 0`
+- **Optional chaining for browser APIs**: `window.gtag?.(...)`
 
-### State Management
+### State & Styling
 
-- All state is managed via `useState` hooks — no external state library
-- Data persistence uses `localStorage` via helpers in `utils.ts`
-- URL-based state sharing uses `JSONCrush` for compression + `query-string` for parsing
-
-### CSS & Styling
-
-- Bootstrap 5 utility classes for layout (`d-flex`, `text-center`, `mb-3`, etc.)
-- Reactstrap components for UI elements (`Button`, `Modal`, `Form`, `Input`, etc.)
-- Custom CSS in `App.css` and `index.css` — minimal, mostly for SVG map styling
+- State: `useState` hooks only — no external state library
+- Persistence: `localStorage` via helpers in `utils.ts`; URL sharing via `JSONCrush` + `query-string`
+- Styling: Bootstrap 5 utility classes + Reactstrap components; custom CSS in `App.css`/`index.css`
 - No CSS modules, no Tailwind, no CSS-in-JS
-
-## Deployment
-
-The app deploys to GitHub Pages via GitHub Actions on push to `main`.
-The Rsbuild `base` is set to `/cebu-level/`.
-
-## Key Dependencies
-
-| Package      | Purpose                              |
-| ------------ | ------------------------------------ |
-| react        | UI framework (v18)                   |
-| reactstrap   | Bootstrap 5 React components         |
-| bootstrap    | CSS framework                        |
-| html2canvas  | Screenshot/image export              |
-| jsoncrush    | URL-safe JSON compression            |
-| query-string | URL query parameter parsing          |
-| react-share  | Social media share buttons           |
-| rsbuild      | Build tool + dev server              |
-| typescript   | Type checking (v4.9)                 |
-| oxlint       | Linter                               |
-| oxfmt        | Code formatter                       |
-| husky        | Git hooks                            |
-| lint-staged  | Run linter/formatter on staged files |
