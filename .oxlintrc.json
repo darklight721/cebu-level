@@ -1,0 +1,13 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "import", "react-perf", "jsx-a11y"],
+  "env": {
+    "browser": true
+  },
+  "settings": {
+    "react": {
+      "version": "18.2.0"
+    }
+  },
+  "rules": {}
+}

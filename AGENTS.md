@@ -1,19 +1,19 @@
 # AGENTS.md — Cebu Level
 
 Cebu Level is an interactive SVG map of Cebu province for tracking travel progress.
-Built with React 18, TypeScript (strict), Bootstrap 5 (via Reactstrap), and Vite 4.
+Built with React 18, TypeScript (strict), Bootstrap 5 (via Reactstrap), and Rsbuild.
 
 ## Build & Dev Commands
 
 ```bash
 npm install          # Install dependencies
-npm run dev          # Start Vite dev server
-npm run build        # Type-check (tsc) then build (vite build)
+npm run dev          # Start Rsbuild dev server
+npm run build        # Type-check (tsc) then build (rsbuild build)
 npm run preview      # Preview production build locally
 ```
 
 **There is no test framework configured.** No test runner, no test files, no test scripts.
-If adding tests, Vitest is the natural choice (already using Vite).
+If adding tests, Vitest is the natural choice.
 
 ### Type Checking
 
@@ -21,17 +21,28 @@ If adding tests, Vitest is the natural choice (already using Vite).
 npx tsc --noEmit     # Run TypeScript type checking only (no output)
 ```
 
-The `npm run build` command runs `tsc && vite build`, so type errors will block the build.
+The `npm run build` command runs `tsc && rsbuild build`, so type errors will block the build.
+
+### Linting
+
+```bash
+npm run lint         # Run oxlint on the project
+npx oxlint src/      # Lint a specific directory
+```
+
+Oxlint is configured in `.oxlintrc.json` with the `typescript`, `import`, `react-perf`, and `jsx-a11y` plugins enabled.
+Oxlint runs automatically on staged `.ts`/`.tsx` files on commit via husky + lint-staged.
 
 ### Formatting
 
 ```bash
-npx prettier --write --ignore-unknown .    # Format all files
-npx prettier --check .                     # Check formatting without writing
+npm run fmt          # Format all files with oxfmt
+npm run fmt:check    # Check formatting without writing
 ```
 
-Prettier runs automatically on commit via husky + lint-staged (pre-commit hook).
-There is no ESLint configured.
+Oxfmt (configured in `.oxfmtrc.json`) replaces Prettier. It is Prettier-compatible — same
+`semi: false` and `singleQuote: true` rules — with `printWidth: 80`.
+Oxfmt runs automatically on all staged files on commit via husky + lint-staged.
 
 ### Commit Messages
 
@@ -56,7 +67,7 @@ src/
   SaveImage.tsx      # html2canvas screenshot + download
   ShareMap.tsx       # URL sharing with social media buttons
   globals.d.ts       # Window interface augmentation (gtag)
-  vite-env.d.ts      # Vite client types
+  vite-env.d.ts      # Vite/Rsbuild client types
   App.css            # Component styles
   index.css          # Global styles
 ```
@@ -66,10 +77,11 @@ Static assets are in `public/`. The app deploys to GitHub Pages at `/cebu-level/
 
 ## Code Style
 
-### Formatting Rules (Prettier)
+### Formatting Rules (Oxfmt)
 
 - **No semicolons** (`"semi": false`)
 - **Single quotes** (`"singleQuote": true`)
+- **Print width** of 80 characters (`"printWidth": 80`)
 - These are enforced on every commit via husky pre-commit hook
 
 ### TypeScript Configuration
@@ -163,21 +175,22 @@ export default function EditMap(props: Props) {
 ## Deployment
 
 The app deploys to GitHub Pages via GitHub Actions on push to `main`.
-The Vite `base` is set to `/cebu-level/`.
+The Rsbuild `base` is set to `/cebu-level/`.
 
 ## Key Dependencies
 
-| Package      | Purpose                      |
-| ------------ | ---------------------------- |
-| react        | UI framework (v18)           |
-| reactstrap   | Bootstrap 5 React components |
-| bootstrap    | CSS framework                |
-| html2canvas  | Screenshot/image export      |
-| jsoncrush    | URL-safe JSON compression    |
-| query-string | URL query parameter parsing  |
-| react-share  | Social media share buttons   |
-| vite         | Build tool + dev server      |
-| typescript   | Type checking (v4.9)         |
-| prettier     | Code formatting              |
-| husky        | Git hooks                    |
-| lint-staged  | Run prettier on staged files |
+| Package      | Purpose                              |
+| ------------ | ------------------------------------ |
+| react        | UI framework (v18)                   |
+| reactstrap   | Bootstrap 5 React components         |
+| bootstrap    | CSS framework                        |
+| html2canvas  | Screenshot/image export              |
+| jsoncrush    | URL-safe JSON compression            |
+| query-string | URL query parameter parsing          |
+| react-share  | Social media share buttons           |
+| rsbuild      | Build tool + dev server              |
+| typescript   | Type checking (v4.9)                 |
+| oxlint       | Linter                               |
+| oxfmt        | Code formatter                       |
+| husky        | Git hooks                            |
+| lint-staged  | Run linter/formatter on staged files |

@@ -7,7 +7,10 @@
     "dev": "rsbuild dev",
     "build": "tsc && rsbuild build",
     "preview": "rsbuild preview",
-    "prepare": "husky"
+    "prepare": "husky",
+    "lint": "oxlint",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check"
   },
   "dependencies": {
     "bootstrap": "^5.2.3",
@@ -26,10 +29,12 @@
     "@types/react-dom": "^18.3.7",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
-    "prettier": "^3.8.1",
+    "oxfmt": "^0.43.0",
+    "oxlint": "^1.58.0",
     "typescript": "^5.9.3"
   },
   "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
+    "*.{ts,tsx}": "oxlint",
+    "**/*": "oxfmt --no-error-on-unmatched-pattern"
   }
 }
