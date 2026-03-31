@@ -16,7 +16,17 @@ npm run fmt          # Format all files with oxfmt
 npm run fmt:check    # Check formatting without writing
 ```
 
-No test framework is configured. Vitest is the natural choice if tests are added.
+Tests use **Rstest** with **happy-dom** as the test environment and **React Testing
+Library** + `@testing-library/user-event` for component tests. Run them with:
+
+```bash
+npm test                # Run all tests
+npm run test:coverage   # Run tests with Istanbul coverage report
+```
+
+Test files live alongside source files in `src/` and follow the `*.test.ts` /
+`*.test.tsx` naming convention. Configuration is in `rstest.config.ts`.
+
 Oxlint and oxfmt run automatically on staged files on commit via husky + lint-staged.
 
 ### Commit Messages

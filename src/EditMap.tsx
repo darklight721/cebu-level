@@ -86,6 +86,7 @@ function EditMapModal({
                 <FormGroup>
                   <Input
                     required
+                    aria-label={`Level ${index + 1} color`}
                     className="color-input"
                     type="color"
                     value={level.color}
